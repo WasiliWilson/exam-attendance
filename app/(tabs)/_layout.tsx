@@ -27,16 +27,16 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
-        name="Menu"
+        name="LoginScreen"
         options={{
-          title: 'Tab',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+          title: 'login',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
-      <Tabs.Screen
-        name="CourseSelection"
+       <Tabs.Screen
+        name="SignUpScreen"
         options={{
-          title: 'Courses',
+          title: 'sign up',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
