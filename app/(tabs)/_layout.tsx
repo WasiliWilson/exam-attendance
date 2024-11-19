@@ -34,9 +34,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="CourseSelection"
+        name="Home"
         options={{
-          title: 'Courses',
+          title: 'House',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="ScanID"
+        options={{
+          title: 'ID verify',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
