@@ -1,6 +1,6 @@
 // components/SignUpScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState('');
@@ -10,6 +10,35 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // Email validation function
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleSignUp = () => {
+    // Check for empty fields
+    if (!email || !username || !department || !courseCode || !password || !confirmPassword) {
+      Alert.alert('Error', 'All fields are required. Please fill them out.');
+      return;
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Invalid email address. Please enter a valid email.');
+      return;
+    }
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match. Please re-enter.');
+      return;
+    }
+
+    // If all validations pass
+    Alert.alert('Success', `Account successfully created for ${username}.`);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titleText}>SIGN UP</Text>
@@ -17,14 +46,19 @@ export default function SignUpScreen() {
       <View style={styles.signupBox}>
         <Text style={styles.instructionText}>SIGN UP TO START SESSION</Text>
 
+        {/* Email Input */}
+        <Text style={styles.fieldLabel}>Enter Email</Text>
         <TextInput
           placeholder="EMAIL"
           value={email}
           onChangeText={setEmail}
           style={styles.input}
           placeholderTextColor="#999"
+          keyboardType="email-address"
         />
 
+        {/* Username Input */}
+        <Text style={styles.fieldLabel}>Enter Username</Text>
         <TextInput
           placeholder="USERNAME"
           value={username}
@@ -33,6 +67,8 @@ export default function SignUpScreen() {
           placeholderTextColor="#999"
         />
 
+        {/* Department Input */}
+        <Text style={styles.fieldLabel}>Enter Department</Text>
         <TextInput
           placeholder="DEPARTMENT"
           value={department}
@@ -41,6 +77,8 @@ export default function SignUpScreen() {
           placeholderTextColor="#999"
         />
 
+        {/* Course Code Input */}
+        <Text style={styles.fieldLabel}>Enter Course Code</Text>
         <TextInput
           placeholder="COURSE CODE"
           value={courseCode}
@@ -49,6 +87,8 @@ export default function SignUpScreen() {
           placeholderTextColor="#999"
         />
 
+        {/* Password Input */}
+        <Text style={styles.fieldLabel}>Enter Password</Text>
         <TextInput
           placeholder="PASSWORD"
           value={password}
@@ -58,6 +98,8 @@ export default function SignUpScreen() {
           secureTextEntry
         />
 
+        {/* Confirm Password Input */}
+        <Text style={styles.fieldLabel}>Confirm Password</Text>
         <TextInput
           placeholder="CONFIRM PASSWORD"
           value={confirmPassword}
@@ -67,7 +109,8 @@ export default function SignUpScreen() {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.signupButton}>
+        {/* Sign-Up Button */}
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
@@ -101,6 +144,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 15,
     textAlign: 'center',
+  },
+  fieldLabel: {
+    width: '100%',
+    color: '#000', // Changed to black
+    fontSize: 14,
+    marginBottom: 5,
+    marginLeft: 5,
+    textAlign: 'left',
   },
   input: {
     width: '100%',

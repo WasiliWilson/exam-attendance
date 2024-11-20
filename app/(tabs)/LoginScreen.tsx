@@ -1,18 +1,23 @@
 // components/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import RNPickerSelect from 'react-native-picker-select';
-
-
 
 export default function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
+  const handleLogin = () => {
+    if (!username || !password || !selectedType) {
+      Alert.alert('Error', 'Please fill in all fields and select a type before logging in.');
+    } else {
+      Alert.alert('Success', `Logged in as ${username} (${selectedType}).`);
+    }
+  };
+
   const handleForgotPassword = () => {
-    Alert.alert("Forgot Password", "Redirect to forgot password screen.");
+    Alert.alert('Forgot Password', 'Redirect to forgot password screen.');
   };
 
   return (
@@ -23,6 +28,8 @@ export default function LoginScreen() {
       <View style={styles.loginBox}>
         <Text style={styles.signInText}>SIGN IN TO START SESSION</Text>
 
+        {/* Username Input */}
+        <Text style={styles.fieldLabel}>Enter Username</Text>
         <TextInput
           placeholder="USERNAME"
           value={username}
@@ -31,6 +38,8 @@ export default function LoginScreen() {
           placeholderTextColor="#999"
         />
 
+        {/* Password Input */}
+        <Text style={styles.fieldLabel}>Enter Password</Text>
         <TextInput
           placeholder="PASSWORD"
           value={password}
@@ -40,6 +49,8 @@ export default function LoginScreen() {
           secureTextEntry
         />
 
+        {/* Select Type Picker */}
+        <Text style={styles.fieldLabel}>Select Type</Text>
         <RNPickerSelect
           onValueChange={(value) => setSelectedType(value)}
           items={[
@@ -53,8 +64,9 @@ export default function LoginScreen() {
           }}
         />
 
+        {/* Buttons */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
@@ -62,6 +74,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
         </View>
 
+        {/* Forgot Password */}
         <TouchableOpacity onPress={handleForgotPassword}>
           <Text style={styles.forgotPassword}>FORGOT PASSWORD</Text>
         </TouchableOpacity>
@@ -102,6 +115,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 15,
     textAlign: 'center',
+  },
+  fieldLabel: {
+    width: '100%',
+    color: '#000', // Black color for labels
+    fontSize: 14,
+    marginBottom: 5,
+    marginLeft: 5,
+    textAlign: 'left',
   },
   input: {
     width: '100%',
