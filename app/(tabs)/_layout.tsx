@@ -26,20 +26,8 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}>
-      <Tabs.Screen
-        name="Menu"
-        options={{
-          title: 'Tab',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
-        }}
-      />
-      <Tabs.Screen
-        name="Home"
-        options={{
-          title: 'House',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+    
+
       <Tabs.Screen
         name="ScanID"
         options={{
