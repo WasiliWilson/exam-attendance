@@ -1,7 +1,19 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Alert,
+  SafeAreaView,
+} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Menu: React.FC<{ onMenuItemPress: (screen: string) => void }> = ({ onMenuItemPress }) => {
+const Menu: React.FC = () => {
+  const [activeScreen, setActiveScreen] = useState<string>('');
+  const navigation = useNavigation();
+
   const menuItems = [
     { label: 'Course Selection', screen: 'CourseSelection' },
     { label: 'Invigilator Scan ID', screen: 'InvigilatorScan' },
@@ -10,45 +22,63 @@ const Menu: React.FC<{ onMenuItemPress: (screen: string) => void }> = ({ onMenuI
     { label: 'Help', screen: 'Help' },
   ];
 
+  const handleLogout = () => {
+    Alert.alert(
+      'Confirm Logout',
+      'Are you sure you want to log out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Log Out', onPress: () => navigation.navigate('Login') },
+      ]
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      {/* Header with menu icon, title, and logout button */}
+    <SafeAreaView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.menuIcon}>
+        <TouchableOpacity style={styles.menuIcon} onPress={() => console.log('Menu icon pressed')}>
           <Text style={styles.menuText}>☰</Text>
         </TouchableOpacity>
         <Text style={styles.headerText}>MENU</Text>
-        <TouchableOpacity style={styles.logoutButton} onPress={() => onMenuItemPress('Logout')}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Text style={styles.logoutButtonText}>Log Out</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Scrollable list of menu items */}
+      {/* Scrollable Menu Items */}
       <ScrollView style={styles.scrollContainer}>
         {menuItems.map((item, index) => (
           <TouchableOpacity
             key={index}
-            style={styles.menuCard}
-            onPress={() => onMenuItemPress(item.screen)}
+            style={[
+              styles.menuCard,
+              activeScreen === item.screen && { backgroundColor: '#E0F2FE' }, // Highlight active
+            ]}
+            onPress={() => {
+              setActiveScreen(item.screen);
+              navigation.navigate(item.screen); // Navigate to corresponding screen
+            }}
+            accessibilityLabel={`Navigate to ${item.label}`}
           >
             <Text style={styles.menuTextItem}>{item.label}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6', // Light gray background
+    backgroundColor: '#F3F4F6',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#3B82F6', // Blue header background
+    backgroundColor: '#3B82F6',
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
@@ -85,16 +115,16 @@ const styles = StyleSheet.create({
   },
   menuCard: {
     margin: 16,
-    backgroundColor: '#FFFFFF', // White card background
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
     padding: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#3B82F6', // Blue left border
+    borderLeftColor: '#3B82F6',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 4, // Shadow for Android
+    elevation: 4,
   },
   menuTextItem: {
     color: '#3B82F6',

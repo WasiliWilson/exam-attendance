@@ -27,20 +27,27 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
-        name="Menu"
-        options={{
-          title: 'Tab',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
-        }}
-      />
-      <Tabs.Screen
         name="CourseSelection"
         options={{
-          title: 'Courses',
+          title: 'COURSE',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
-      
+      <Tabs.Screen
+      name="ExamStat"
+      options={{
+        title: 'STATS',
+        tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+      }}
+    />
+
+      <Tabs.Screen
+        name="Help"
+        options={{
+          title: 'HELP',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+        }}
+      />
     </Tabs>
   );
 }
