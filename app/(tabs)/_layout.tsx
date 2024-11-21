@@ -33,10 +33,17 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
         }}
       />
-      <Tabs.Screen
-        name="CourseSelection"
+       <Tabs.Screen
+        name="ExamStat"
         options={{
-          title: 'Courses',
+          title: 'STAT',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Help"
+        options={{
+          title: 'HELP',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
