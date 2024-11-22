@@ -7,9 +7,6 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 
-import ScanID from './ScanID';
-import Home from './Home';
-
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -33,7 +30,7 @@ export default function TabLayout() {
     
 
       <Tabs.Screen
-        name="Home"
+        name="index"
         options={{
           title: "Identify Student",
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
@@ -41,7 +38,7 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="ScanID"
+        name="Overlay"
         options={{
           title: 'ID verify',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,

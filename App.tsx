@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Home from './app/(tabs)/Home'
-import ScanID from './app/(tabs)/ScanID';
+//import Overlay from './app/(tabs)/Overlay'
+import index from './app/(tabs)/index';
 
 const Drawer = createDrawerNavigator();
 const App = () => {
@@ -21,8 +21,8 @@ const App = () => {
         }}
       >
 
-      <Drawer.Screen name="Home" component={Home}/>
-      <Drawer.Screen name="ScanID" component={ScanID}/>
+      <Drawer.Screen name="Index" component={index}/>
+     
       </Drawer.Navigator>
       
     </NavigationContainer>
