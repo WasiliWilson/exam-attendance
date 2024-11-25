@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <SafeAreaView style={styles.container}>
       <Stack.Screen options={{ title: "Overview", headerShown: false }} />
-      <Text style={styles.title}>QR Code Scanner</Text>
+      <Text style={styles.title}>STUDENT ID SCAN</Text>
       <View style={{ gap: 20 }}>
         <Pressable onPress={requestPermission}>
           <Text style={styles.buttonStyle}>Request Permissions</Text>
@@ -24,7 +24,7 @@ export default function Home() {
                 { opacity: !isPermissionGranted ? 0.5 : 1 },
               ]}
             >
-              Scan Code
+              Scan ID
             </Text>
           </Pressable>
         </Link>
@@ -37,12 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "white",
     justifyContent: "space-around",
     paddingVertical: 80,
   },
   title: {
-    color: "white",
+    color: "purple",
     fontSize: 40,
   },
   buttonStyle: {
