@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // components/SignUpScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -37,10 +38,51 @@ export default function SignUpScreen() {
 
     // If all validations pass
     Alert.alert('Success', `Account successfully created for ${username}.`);
+=======
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { createUserWithEmailAndPassword } from "firebase/auth"; // Import the function
+import { auth } from './firebaseConfig'; // Import the initialized auth instance
+
+export default function SignUpScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleSignUp = async () => {
+    try {
+      // Ensure email and password are not empty
+      if (!email || !password) {
+        Alert.alert('Error', 'Please provide both email and password.');
+        return;
+      }
+
+      // Create a new user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+      // Extract user data
+      const user = userCredential.user;
+      Alert.alert('Success', `Account created for ${user.email}`);
+    } catch (error: any) {
+      // Handle errors
+      console.error(error.message);
+
+      // Display user-friendly error messages
+      if (error.code === 'auth/email-already-in-use') {
+        Alert.alert('Error', 'This email is already in use.');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('Error', 'Invalid email format.');
+      } else if (error.code === 'auth/weak-password') {
+        Alert.alert('Error', 'Password must be at least 6 characters.');
+      } else {
+        Alert.alert('Error', error.message);
+      }
+    }
+>>>>>>> Stashed changes
   };
 
   return (
     <View style={styles.container}>
+<<<<<<< Updated upstream
       <Text style={styles.titleText}>SIGN UP</Text>
 
       <View style={styles.signupBox}>
@@ -114,11 +156,32 @@ export default function SignUpScreen() {
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
+=======
+      <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.input}
+        keyboardType="email-address"
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        style={styles.input}
+        secureTextEntry
+      />
+      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
+        <Text style={styles.buttonText}>Sign Up</Text>
+      </TouchableOpacity>
+>>>>>>> Stashed changes
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+<<<<<<< Updated upstream
   container: {
     flex: 1,
     backgroundColor: '#d0e6f5',
@@ -173,4 +236,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
+=======
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 24, marginBottom: 20 },
+  input: { width: '80%', height: 40, borderWidth: 1, marginBottom: 10, padding: 10 },
+  button: { backgroundColor: '#007BFF', padding: 10, borderRadius: 5 },
+  buttonText: { color: 'white', fontWeight: 'bold' },
+>>>>>>> Stashed changes
 });

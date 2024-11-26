@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // components/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
@@ -18,10 +19,37 @@ export default function LoginScreen() {
 
   const handleForgotPassword = () => {
     Alert.alert('Forgot Password', 'Redirect to forgot password screen.');
+=======
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+//import { auth } from '../firebaseConfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import {auth} from './firebaseConfig'
+
+export default function LoginScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password.');
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        Alert.alert('Success', `Welcome ${userCredential.user.email}`);
+      })
+      .catch((error) => {
+        console.error(error.message);
+        Alert.alert('Error', error.message);
+      });
+>>>>>>> Stashed changes
   };
 
   return (
     <View style={styles.container}>
+<<<<<<< Updated upstream
       <Text style={styles.welcomeText}>WELCOME TO</Text>
       <Text style={styles.titleText}>EXAM</Text>
 
@@ -79,11 +107,32 @@ export default function LoginScreen() {
           <Text style={styles.forgotPassword}>FORGOT PASSWORD</Text>
         </TouchableOpacity>
       </View>
+=======
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <Text style={styles.buttonText}>Login</Text>
+      </TouchableOpacity>
+>>>>>>> Stashed changes
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+<<<<<<< Updated upstream
   container: {
     flex: 1,
     backgroundColor: '#d0e6f5',
@@ -164,4 +213,11 @@ const styles = StyleSheet.create({
     marginTop: 15,
     textDecorationLine: 'underline',
   },
+=======
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  title: { fontSize: 24, marginBottom: 20 },
+  input: { width: '80%', height: 40, borderWidth: 1, marginBottom: 10, padding: 10 },
+  button: { backgroundColor: '#007BFF', padding: 10, borderRadius: 5 },
+  buttonText: { color: 'white', fontWeight: 'bold' },
+>>>>>>> Stashed changes
 });

@@ -27,6 +27,7 @@ export default function TabLayout() {
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
+<<<<<<< Updated upstream
         name="LoginScreen"
         options={{
           title: 'login',
@@ -37,6 +38,18 @@ export default function TabLayout() {
         name="SignUpScreen"
         options={{
           title: 'sign up',
+=======
+        name="SignUpScreen"
+        options={{
+          title: 'SignUpScreen',
+          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
+        }}
+      />
+      <Tabs.Screen
+        name="LoginScreen"
+        options={{
+          title: 'LoginScreen',
+>>>>>>> Stashed changes
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
