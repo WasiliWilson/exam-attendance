@@ -1,7 +1,8 @@
-<<<<<<< Updated upstream
 // components/SignUpScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth'; // Firebase function import
+import { auth } from './firebaseConfig'; // Firebase config import
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState('');
@@ -17,56 +18,44 @@ export default function SignUpScreen() {
     return emailRegex.test(email);
   };
 
-  const handleSignUp = () => {
-    // Check for empty fields
-    if (!email || !username || !department || !courseCode || !password || !confirmPassword) {
-      Alert.alert('Error', 'All fields are required. Please fill them out.');
-      return;
-    }
-
-    // Validate email format
-    if (!validateEmail(email)) {
-      Alert.alert('Error', 'Invalid email address. Please enter a valid email.');
-      return;
-    }
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match. Please re-enter.');
-      return;
-    }
-
-    // If all validations pass
-    Alert.alert('Success', `Account successfully created for ${username}.`);
-=======
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { createUserWithEmailAndPassword } from "firebase/auth"; // Import the function
-import { auth } from './firebaseConfig'; // Import the initialized auth instance
-
-export default function SignUpScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
   const handleSignUp = async () => {
     try {
-      // Ensure email and password are not empty
-      if (!email || !password) {
-        Alert.alert('Error', 'Please provide both email and password.');
+      // Check for empty fields
+      if (!email || !username || !department || !courseCode || !password || !confirmPassword) {
+        Alert.alert('Error', 'All fields are required. Please fill them out.');
         return;
       }
 
-      // Create a new user with email and password
+      // Validate email format
+      if (!validateEmail(email)) {
+        Alert.alert('Error', 'Invalid email address. Please enter a valid email.');
+        return;
+      }
+
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        Alert.alert('Error', 'Passwords do not match. Please re-enter.');
+        return;
+      }
+
+      // Create a new user with Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
-      // Extract user data
+      // Extract and display user information
       const user = userCredential.user;
-      Alert.alert('Success', `Account created for ${user.email}`);
+      Alert.alert('Success', `Account successfully created for ${username} with email ${user.email}.`);
+
+      // Optional: Reset the form after successful signup
+      setEmail('');
+      setUsername('');
+      setDepartment('');
+      setCourseCode('');
+      setPassword('');
+      setConfirmPassword('');
     } catch (error: any) {
-      // Handle errors
       console.error(error.message);
 
-      // Display user-friendly error messages
+      // Handle Firebase-specific errors
       if (error.code === 'auth/email-already-in-use') {
         Alert.alert('Error', 'This email is already in use.');
       } else if (error.code === 'auth/invalid-email') {
@@ -77,12 +66,10 @@ export default function SignUpScreen() {
         Alert.alert('Error', error.message);
       }
     }
->>>>>>> Stashed changes
   };
 
   return (
     <View style={styles.container}>
-<<<<<<< Updated upstream
       <Text style={styles.titleText}>SIGN UP</Text>
 
       <View style={styles.signupBox}>
@@ -156,35 +143,14 @@ export default function SignUpScreen() {
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>
-=======
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        keyboardType="email-address"
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-      />
-      <TouchableOpacity onPress={handleSignUp} style={styles.button}>
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
->>>>>>> Stashed changes
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-<<<<<<< Updated upstream
   container: {
     flex: 1,
-    backgroundColor: '#d0e6f5',
+    backgroundColor: '#d0e6f5', // Light blue background
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -210,7 +176,7 @@ const styles = StyleSheet.create({
   },
   fieldLabel: {
     width: '100%',
-    color: '#000', // Changed to black
+    color: '#000',
     fontSize: 14,
     marginBottom: 5,
     marginLeft: 5,
@@ -236,11 +202,4 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-=======
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 24, marginBottom: 20 },
-  input: { width: '80%', height: 40, borderWidth: 1, marginBottom: 10, padding: 10 },
-  button: { backgroundColor: '#007BFF', padding: 10, borderRadius: 5 },
-  buttonText: { color: 'white', fontWeight: 'bold' },
->>>>>>> Stashed changes
 });

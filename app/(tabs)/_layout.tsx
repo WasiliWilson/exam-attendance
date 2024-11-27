@@ -26,34 +26,38 @@ export default function TabLayout() {
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
       }}>
-      <Tabs.Screen
-<<<<<<< Updated upstream
-        name="LoginScreen"
-        options={{
-          title: 'login',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-       <Tabs.Screen
-        name="SignUpScreen"
-        options={{
-          title: 'sign up',
-=======
-        name="SignUpScreen"
-        options={{
-          title: 'SignUpScreen',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />
-        }}
-      />
+      {/* Login Screen Tab */}
       <Tabs.Screen
         name="LoginScreen"
         options={{
-          title: 'LoginScreen',
->>>>>>> Stashed changes
+          title: 'Login',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
-      
+
+      {/* Sign Up Screen Tab */}
+      <Tabs.Screen
+        name="SignUpScreen"
+        options={{
+          title: 'Sign Up',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user-plus" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="CourseSelection"
+        options={{
+          title: 'course',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user-plus" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="Help"
+        options={{
+          title: 'help',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user-plus" color={color} />,
+        }}
+      />
     </Tabs>
+    
   );
 }

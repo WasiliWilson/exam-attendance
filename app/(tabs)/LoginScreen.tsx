@@ -1,177 +1,129 @@
-<<<<<<< Updated upstream
-// components/LoginScreen.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-
-export default function LoginScreen() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-
-  const handleLogin = () => {
-    if (!username || !password || !selectedType) {
-      Alert.alert('Error', 'Please fill in all fields and select a type before logging in.');
-    } else {
-      Alert.alert('Success', `Logged in as ${username} (${selectedType}).`);
-    }
-  };
-
-  const handleForgotPassword = () => {
-    Alert.alert('Forgot Password', 'Redirect to forgot password screen.');
-=======
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
-//import { auth } from '../firebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth} from './firebaseConfig'
+import { auth } from './firebaseConfig';
+import { useRouter } from 'expo-router'; // Use useRouter for navigation
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedType, setSelectedType] = useState('');
+  const router = useRouter(); // Initialize useRouter for navigation
 
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password.');
+  const handleLogin = async () => {
+    if (!email || !password || !selectedType) {
+      Alert.alert('Error', 'Please fill in all fields and select a user type.');
       return;
     }
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        Alert.alert('Success', `Welcome ${userCredential.user.email}`);
-      })
-      .catch((error) => {
-        console.error(error.message);
-        Alert.alert('Error', error.message);
-      });
->>>>>>> Stashed changes
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      Alert.alert('Success', `Welcome, ${userCredential.user.email} (${selectedType})!`);
+      router.push('/(tabs)/CourseSelection'); // Navigate after successful login
+    } catch (error: any) {
+      console.error(error.message);
+      // Friendly error handling
+      if (error.code === 'auth/wrong-password') {
+        Alert.alert('Error', 'Incorrect password. Please try again.');
+      } else if (error.code === 'auth/user-not-found') {
+        Alert.alert('Error', 'No user found with this email.');
+      } else if (error.code === 'auth/invalid-email') {
+        Alert.alert('Error', 'The email address is not valid.');
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+      }
+    }
+  };
+
+  const handleSignUpNavigation = () => {
+    router.push('/(tabs)/SignUpScreen'); // Navigate to Sign Up screen
+  };
+
+  const handleForgotPassword = () => {
+    Alert.alert('Forgot Password', 'Redirect to forgot password screen.');
   };
 
   return (
     <View style={styles.container}>
-<<<<<<< Updated upstream
-      <Text style={styles.welcomeText}>WELCOME TO</Text>
-      <Text style={styles.titleText}>EXAM</Text>
-
-      <View style={styles.loginBox}>
-        <Text style={styles.signInText}>SIGN IN TO START SESSION</Text>
-
-        {/* Username Input */}
-        <Text style={styles.fieldLabel}>Enter Username</Text>
-        <TextInput
-          placeholder="USERNAME"
-          value={username}
-          onChangeText={setUsername}
-          style={styles.input}
-          placeholderTextColor="#999"
-        />
-
-        {/* Password Input */}
-        <Text style={styles.fieldLabel}>Enter Password</Text>
-        <TextInput
-          placeholder="PASSWORD"
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholderTextColor="#999"
-          secureTextEntry
-        />
-
-        {/* Select Type Picker */}
-        <Text style={styles.fieldLabel}>Select Type</Text>
-        <RNPickerSelect
-          onValueChange={(value) => setSelectedType(value)}
-          items={[
-            { label: 'Invigilator', value: 'invigilator' },
-            { label: 'Teacher', value: 'teacher' },
-          ]}
-          placeholder={{ label: 'SELECT TYPE', value: null }}
-          style={{
-            inputIOS: styles.picker,
-            inputAndroid: styles.picker,
-          }}
-        />
-
-        {/* Buttons */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>LOGIN</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>SIGN UP</Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Forgot Password */}
-        <TouchableOpacity onPress={handleForgotPassword}>
-          <Text style={styles.forgotPassword}>FORGOT PASSWORD</Text>
-        </TouchableOpacity>
-      </View>
-=======
       <Text style={styles.title}>Login</Text>
+
+      {/* Email Input */}
+      <Text style={styles.fieldLabel}>Enter Email</Text>
       <TextInput
-        style={styles.input}
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
         style={styles.input}
+        keyboardType="email-address"
+        placeholderTextColor="#999"
+      />
+
+      {/* Password Input */}
+      <Text style={styles.fieldLabel}>Enter Password</Text>
+      <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
+        style={styles.input}
         secureTextEntry
+        placeholderTextColor="#999"
       />
-      <TouchableOpacity onPress={handleLogin} style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
+
+      {/* User Type Picker */}
+      <Text style={styles.fieldLabel}>Select User Type</Text>
+      <RNPickerSelect
+        onValueChange={(value) => setSelectedType(value)}
+        items={[
+          { label: 'Invigilator', value: 'invigilator' },
+          { label: 'Teacher', value: 'teacher' },
+        ]}
+        placeholder={{ label: 'Select User Type', value: null }}
+        style={{
+          inputIOS: styles.picker,
+          inputAndroid: styles.picker,
+        }}
+        value={selectedType} // Ensure binding to selectedType
+      />
+
+      {/* Buttons */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleSignUpNavigation}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Forgot Password */}
+      <TouchableOpacity onPress={handleForgotPassword}>
+        <Text style={styles.forgotPassword}>Forgot Password?</Text>
       </TouchableOpacity>
->>>>>>> Stashed changes
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-<<<<<<< Updated upstream
   container: {
     flex: 1,
     backgroundColor: '#d0e6f5',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
-  welcomeText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#666',
-  },
-  titleText: {
+  title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
-    marginTop: 5,
-  },
-  loginBox: {
-    backgroundColor: '#4a90e2',
-    padding: 20,
-    borderRadius: 10,
-    width: '85%',
-    maxWidth: 350,
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  signInText: {
-    color: '#fff',
-    fontSize: 14,
-    marginBottom: 15,
-    textAlign: 'center',
+    color: '#003f88',
+    marginBottom: 20,
   },
   fieldLabel: {
     width: '100%',
-    color: '#000', // Black color for labels
     fontSize: 14,
+    color: '#333',
     marginBottom: 5,
-    marginLeft: 5,
-    textAlign: 'left',
   },
   input: {
     width: '100%',
@@ -179,7 +131,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 15,
   },
   picker: {
     width: '100%',
@@ -187,7 +139,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 10,
+    marginBottom: 15,
     color: '#333',
   },
   buttonContainer: {
@@ -208,16 +160,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   forgotPassword: {
-    color: '#f0f0f0',
+    color: '#003f88',
     fontSize: 12,
     marginTop: 15,
     textDecorationLine: 'underline',
   },
-=======
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 24, marginBottom: 20 },
-  input: { width: '80%', height: 40, borderWidth: 1, marginBottom: 10, padding: 10 },
-  button: { backgroundColor: '#007BFF', padding: 10, borderRadius: 5 },
-  buttonText: { color: 'white', fontWeight: 'bold' },
->>>>>>> Stashed changes
 });
