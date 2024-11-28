@@ -1,4 +1,4 @@
-import { Camera, CameraView, BarcodeScanningResult } from "expo-camera"; // Correct type name
+import { CameraView, BarcodeScanningResult } from "expo-camera"; // Correct type name
 import { Stack } from "expo-router";
 import {
   AppState,
@@ -10,14 +10,15 @@ import {
   Alert,
 } from "react-native";
 import Overlay from "./Overlay";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5lSQxhZp1jXZMF9SwyJkkkSw1eZcvFK895I-KMG9MkFeoue-rEuscsRnTh2AohogH/exec";
 
 export default function Home() {
   const qrLock = useRef(false); // Prevent multiple scans in quick succession
   const appState = useRef(AppState.currentState);
 
   useEffect(() => {
-    // Reset qrLock when app becomes active
     const subscription = AppState.addEventListener("change", (nextAppState) => {
       if (
         appState.current.match(/inactive|background/) &&
@@ -33,18 +34,38 @@ export default function Home() {
     };
   }, []);
 
+  const sendDataToGoogleSheet = async (scannedData: string) => {
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: scannedData }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.status === "success") {
+        Alert.alert("Success", `Student Name: ${result.name}`);
+      } else {
+        Alert.alert("Error", result.message || "Student not found");
+      }
+    } catch (error) {
+      console.error("Error sending data to Google Sheets:", error);
+      Alert.alert("Error", "Failed to send data to Google Sheets.");
+    }
+  };
+
   const handleBarcodeScanned = async ({ data }: BarcodeScanningResult) => {
     if (data && !qrLock.current) {
       qrLock.current = true; // Lock to prevent multiple scans
       console.log("Scanned QR Code Data:", data);
 
       try {
-        // Check if data is a URL and open it, else show the data in an alert
-        if (data.startsWith("http://") || data.startsWith("https://")) {
-          await Linking.openURL(data);
-        } else {
-          Alert.alert("Scanned Data", data);
-        }
+        await sendDataToGoogleSheet(data);
       } catch (error) {
         console.error("Error processing QR code:", error);
         Alert.alert("Error", "Unable to process the QR code.");
