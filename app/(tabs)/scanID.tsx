@@ -10,7 +10,7 @@ export default function Home() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Stack.Screen options={{ title: "Overview", headerShown: false }} />
+      <Stack.Screen options={{ title: "Done", headerShown: false }} />
       <Text style={styles.title}>STUDENT ID SCAN</Text>
       <View style={{ gap: 20 }}>
         <Pressable onPress={requestPermission}>

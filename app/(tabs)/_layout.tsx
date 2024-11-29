@@ -36,14 +36,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
         }}
       />
-
-      <Tabs.Screen
-        name="Overlay"
-        options={{
-          title: 'ID verify',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
       
     </Tabs>
   );

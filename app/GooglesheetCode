@@ -1,0 +1,83 @@
+{/*function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      throw new Error("Invalid POST data");
+    }
+
+    // Get the Google Sheet
+    var sheet = SpreadsheetApp.openById('18wEe0YD9ero29bOxNRaYcokuezEinCM5NFXYNaIQ7nE').getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+
+    if (!data.id) {
+      throw new Error("Missing 'id' in POST data");
+    }
+
+    // Search for the student ID in column A
+    var range = sheet.getRange("A:A");
+    var values = range.getValues();
+
+    for (var i = 0; i < values.length; i++) {
+      if (values[i][0] === data.id) {
+        // Get the student's name from column B
+        var studentName = sheet.getRange("B" + (i + 1)).getValue();
+
+        // Get the current timestamp
+        var timestamp = new Date();
+        var formattedTimestamp = timestamp.toLocaleString(); // Local format
+
+        // Check column C (First Scan) and D (Second Scan)
+        var firstScan = sheet.getRange("C" + (i + 1)).getValue();
+        var secondScan = sheet.getRange("D" + (i + 1)).getValue();
+
+        if (!firstScan) {
+          // If no first scan exists, mark this as the first scan
+          sheet.getRange("C" + (i + 1)).setValue(formattedTimestamp);
+          var scanType = "Verification";
+        } else if (!secondScan) {
+          // If the first scan exists but no second scan, mark this as the second scan
+          sheet.getRange("D" + (i + 1)).setValue(formattedTimestamp);
+          var scanType = "Submission";
+        } else {
+          // If both columns are filled, indicate already scanned twice
+          return ContentService.createTextOutput(JSON.stringify({
+            status: 'already_scanned',
+            message: 'This ID has already been scanned twice.',
+            id: data.id,
+            name: studentName
+          })).setMimeType(ContentService.MimeType.JSON);
+        }
+
+        // Log all scans in a "Scan Log" sheet
+        var logSheet = SpreadsheetApp.openById('18wEe0YD9ero29bOxNRaYcokuezEinCM5NFXYNaIQ7nE').getSheetByName("Scan Log");
+        if (!logSheet) {
+          logSheet = SpreadsheetApp.openById('18wEe0YD9ero29bOxNRaYcokuezEinCM5NFXYNaIQ7nE').insertSheet("Scan Log");
+          logSheet.appendRow(["ID", "Name", "Scan Type", "Time"]);
+        }
+        logSheet.appendRow([data.id, studentName, scanType, formattedTimestamp]);
+
+        // Return a success response
+        return ContentService.createTextOutput(JSON.stringify({
+          status: 'success',
+          id: data.id,
+          name: studentName,
+          time: formattedTimestamp,
+          scanType: scanType
+        })).setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
+    // If no matching ID found
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'not_found',
+      message: 'No student found with the provided ID'
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (error) {
+    // Handle errors
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.message
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+*/}

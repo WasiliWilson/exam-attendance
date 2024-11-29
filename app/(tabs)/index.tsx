@@ -1,3 +1,4 @@
+import React from "react";
 import {
   AppState,
   Linking,
@@ -9,25 +10,40 @@ import {
   FlatList,
   Text,
   View,
+  Dimensions,
 } from "react-native";
-import { CameraView, BarcodeScanningResult } from "expo-camera"; // Correct type name
+import { CameraView, BarcodeScanningResult } from "expo-camera";
 import { Stack } from "expo-router";
-import Overlay from "./Overlay";
 import { useEffect, useRef, useState } from "react";
+import { Canvas, DiffRect, rect, rrect } from "@shopify/react-native-skia";
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHkBW_TLK5kUBUt91MqUn61aRkXT17zm9m0CCaLTPFw5iyCfCdapvaIDbvHT667xU4/exec";
+
+const { width, height } = Dimensions.get("window");
+const innerDimension = 300;
+
+const outer = rrect(rect(0, 0, width, height), 0, 0);
+const inner = rrect(
+  rect(
+    width / 2 - innerDimension / 2,
+    height / 2 - innerDimension / 2,
+    innerDimension,
+    innerDimension
+  ),
+  50,
+  50
+);
 
 // Define the type for a Student
 type Student = {
   id: string;
   name: string;
   scannedAt?: string; // Optional timestamp
-}
+};
 
 export default function Home() {
-  const qrLock = useRef(false); // Prevent multiple scans in quick succession
+  const qrLock = useRef(false);
   const appState = useRef(AppState.currentState);
-  {/*const [students, setStudents] = useState([]); // State to store scanned students*/}
   const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
@@ -46,25 +62,6 @@ export default function Home() {
     };
   }, []);
 
-  const fetchScannedStudents = async () => {
-    try {
-      const response = await fetch(`${SCRIPT_URL}?action=getScannedStudents`);
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      if (result.status === "success") {
-        setStudents(result.students); // Set the list of students
-      } else {
-        Alert.alert("Error", result.message || "Failed to fetch students");
-      }
-    } catch (error) {
-      console.error("Error fetching scanned students:", error);
-      Alert.alert("Error", "Failed to fetch scanned students.");
-    }
-  };
-
   const sendDataToGoogleSheet = async (scannedData: string) => {
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -81,7 +78,6 @@ export default function Home() {
 
       if (result.status === "success") {
         Alert.alert("Success", `Reg. Number: ${result.id}\nStudent Name: ${result.name}\nScanned Time: ${result.time}`);
-        fetchScannedStudents(); // Update the student list after a scan
       } else {
         Alert.alert("Error", result.message || "Student not found");
       }
@@ -93,16 +89,10 @@ export default function Home() {
 
   const handleBarcodeScanned = async ({ data }: BarcodeScanningResult) => {
     if (data && !qrLock.current) {
-      qrLock.current = true; // Lock to prevent multiple scans
-      console.log("Scanned QR Code Data:", data);
-
+      qrLock.current = true;
       try {
         await sendDataToGoogleSheet(data);
-      } catch (error) {
-        console.error("Error processing QR code:", error);
-        Alert.alert("Error", "Unable to process the QR code.");
       } finally {
-        // Reset the lock after 1 second
         setTimeout(() => {
           qrLock.current = false;
         }, 1000);
@@ -114,7 +104,7 @@ export default function Home() {
     <SafeAreaView style={StyleSheet.absoluteFillObject}>
       <Stack.Screen
         options={{
-          title: "Overview",
+          title: "Verify ID",
           headerShown: false,
         }}
       />
@@ -124,45 +114,16 @@ export default function Home() {
         facing="back"
         onBarcodeScanned={handleBarcodeScanned}
       />
-      <Overlay />
-
-      <View style={styles.listContainer}>
-        <Text style={styles.headerText}>Scanned Students</Text>
-        <FlatList
-          data={students}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.studentItem}>
-              <Text style={styles.studentText}>ID: {item.id}</Text>
-              <Text style={styles.studentText}>Name: {item.name}</Text>
-              <Text style={styles.studentText}>Time: {item.scannedAt}</Text>
-            </View>
-          )}
-        />
-      </View>
+      {/* Overlay component */}
+      <Canvas
+        style={
+          Platform.OS === "android" ? { flex: 1 } : StyleSheet.absoluteFillObject
+        }
+      >
+        <DiffRect inner={inner} outer={outer} color="white" opacity={0.5} />
+      </Canvas>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  listContainer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 16,
-  },
-  headerText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 8,
-    color: "#000",
-  },
-  studentItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderColor: "#ccc",
-  },
-  studentText: {
-    fontSize: 16,
-    color: "#000",
-  },
-});
+const styles = StyleSheet.create({});
