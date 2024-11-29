@@ -12,7 +12,7 @@ const inner = rrect(
     width / 2 - innerDimension / 2,
     height / 2 - innerDimension / 2,
     innerDimension,
-    innerDimension
+    innerDimension,
   ),
   50,
   50

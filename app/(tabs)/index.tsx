@@ -1,5 +1,3 @@
-import { CameraView, BarcodeScanningResult } from "expo-camera"; // Correct type name
-import { Stack } from "expo-router";
 import {
   AppState,
   Linking,
@@ -8,15 +6,29 @@ import {
   StatusBar,
   StyleSheet,
   Alert,
+  FlatList,
+  Text,
+  View,
 } from "react-native";
+import { CameraView, BarcodeScanningResult } from "expo-camera"; // Correct type name
+import { Stack } from "expo-router";
 import Overlay from "./Overlay";
 import { useEffect, useRef, useState } from "react";
 
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx5lSQxhZp1jXZMF9SwyJkkkSw1eZcvFK895I-KMG9MkFeoue-rEuscsRnTh2AohogH/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxHkBW_TLK5kUBUt91MqUn61aRkXT17zm9m0CCaLTPFw5iyCfCdapvaIDbvHT667xU4/exec";
+
+// Define the type for a Student
+type Student = {
+  id: string;
+  name: string;
+  scannedAt?: string; // Optional timestamp
+}
 
 export default function Home() {
   const qrLock = useRef(false); // Prevent multiple scans in quick succession
   const appState = useRef(AppState.currentState);
+  {/*const [students, setStudents] = useState([]); // State to store scanned students*/}
+  const [students, setStudents] = useState<Student[]>([]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (nextAppState) => {
@@ -34,6 +46,25 @@ export default function Home() {
     };
   }, []);
 
+  const fetchScannedStudents = async () => {
+    try {
+      const response = await fetch(`${SCRIPT_URL}?action=getScannedStudents`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result.status === "success") {
+        setStudents(result.students); // Set the list of students
+      } else {
+        Alert.alert("Error", result.message || "Failed to fetch students");
+      }
+    } catch (error) {
+      console.error("Error fetching scanned students:", error);
+      Alert.alert("Error", "Failed to fetch scanned students.");
+    }
+  };
+
   const sendDataToGoogleSheet = async (scannedData: string) => {
     try {
       const response = await fetch(SCRIPT_URL, {
@@ -49,7 +80,8 @@ export default function Home() {
       const result = await response.json();
 
       if (result.status === "success") {
-        Alert.alert("Success", `Student Name: ${result.name}`);
+        Alert.alert("Success", `Reg. Number: ${result.id}\nStudent Name: ${result.name}\nScanned Time: ${result.time}`);
+        fetchScannedStudents(); // Update the student list after a scan
       } else {
         Alert.alert("Error", result.message || "Student not found");
       }
@@ -93,6 +125,44 @@ export default function Home() {
         onBarcodeScanned={handleBarcodeScanned}
       />
       <Overlay />
+
+      <View style={styles.listContainer}>
+        <Text style={styles.headerText}>Scanned Students</Text>
+        <FlatList
+          data={students}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <View style={styles.studentItem}>
+              <Text style={styles.studentText}>ID: {item.id}</Text>
+              <Text style={styles.studentText}>Name: {item.name}</Text>
+              <Text style={styles.studentText}>Time: {item.scannedAt}</Text>
+            </View>
+          )}
+        />
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  listContainer: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 16,
+  },
+  headerText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 8,
+    color: "#000",
+  },
+  studentItem: {
+    padding: 12,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  studentText: {
+    fontSize: 16,
+    color: "#000",
+  },
+});
