@@ -1,4 +1,4 @@
-package com.kamwana.eas;
+package com.attendance.eas;
 
 import org.junit.Test;
 
