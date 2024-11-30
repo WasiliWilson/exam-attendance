@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#D9E6F2">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WELCOME TO"
+        android:textSize="24sp"
+        android:textColor="#5C7EB9"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/tv_exam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EXAM"
+        android:textSize="28sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Login Form Container -->
+    <LinearLayout
+        android:id="@+id/login_form_container"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/layout1"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:layout_gravity="center">
+
+        <!-- Subtitle -->
+        <TextView
+            android:id="@+id/tv_signin_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SIGN IN TO START SESSION"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Username Field -->
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="USERNAME"
+            android:textColorHint="@color/gray"
+            android:background="@drawable/editor1"
+            android:padding="10dp"
+            android:textColor="#000000"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Password Field -->
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="PASSWORD"
+            android:textColorHint="@color/gray"
+            android:inputType="textPassword"
+            android:background="@drawable/editor1"
+            android:padding="10dp"
+            android:textColor="#000000"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Select Type Dropdown -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/select_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/editor1"
+                android:padding="10dp" >
+
+                <TextView
+                    android:id="@+id/tv_select_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#836F6F"
+                    android:text="SELECT TYPE"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/down"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/invigilator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp"
+                android:layout_marginTop="2dp"
+                android:text="Invigilator"/>
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/stuff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="2dp"
+                android:text="admin"/>
+        </LinearLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="incorect username or password"
+            android:textColor="#ED1111"
+            android:textSize="17dp"
+            android:layout_marginBottom="5dp"/>
+        <!-- Button Row -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+
+            <TextView
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button1"
+                android:text="LOGIN"
+                android:textColor="#FFFFFF"
+                android:padding="10dp"
+                android:layout_marginEnd="4dp" />
+
+            <TextView
+                android:id="@+id/btn_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/button1"
+                android:text="SIGN UP"
+                android:textColor="#FFFFFF"
+                android:padding="10dp"
+                android:layout_marginStart="4dp" />
+        </RelativeLayout>
+
+        <!-- Forgot Password -->
+        <TextView
+            android:id="@+id/tv_forgot_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FORGOT PASSWORD"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:layout_gravity="center" />
+    </LinearLayout>
+</LinearLayout>

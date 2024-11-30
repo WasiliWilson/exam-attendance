@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#D9E6F2">
+
+    <!-- Toolbar/Menu Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:background="#5C7EB9"
+            android:gravity="center_vertical">
+
+            <!-- Hamburger Icon -->
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/hamburger_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/lines"
+                android:layout_marginStart="16dp"/>
+
+            <!-- Menu Title -->
+            <TextView
+                android:id="@+id/menu_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="MENU"
+                android:layout_centerInParent="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <!-- Menu Options Container -->
+        <LinearLayout
+            android:id="@+id/menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            android:layout_gravity="center">
+
+            <!-- Menu Buttons -->
+            <TextView
+                android:id="@+id/btn_course_selection"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button1"
+                android:text="COURSE SELECTION"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/btn_invigilator_scan_id"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button1"
+                android:text="INVIGILATOR SCAN ID"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/btn_attendance"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button1"
+                android:text="ATTENDANCE"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/btn_exam_stats"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/button1"
+                android:text="EXAM STATS"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+
+            <TextView
+                android:id="@+id/btn_help"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:background="@drawable/button1"
+                android:text="HELP"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:padding="12dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/dashboard_layout"
+        layout="@layout/activity_dashboard"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"/>
+
+
+    <LinearLayout
+        android:paddingTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
+
+        <LinearLayout
+            android:id="@+id/dashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/blue"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/dashboard"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dashboard"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/menu"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/menu_icon"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Menu"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
